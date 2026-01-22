@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Income Tax Calculator FY 2025-26</title>
+    <title>Comprehensive Tax Calculator FY 2025-26</title>
     <style>
         :root {
             --primary-color: #2c3e50;
-            --accent-color: #3498db;
-            --bg-color: #f4f6f7;
-            --container-bg: #ffffff;
-            --border-radius: 8px;
-            --font-heading: 'Georgia', serif;
-            --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --accent-color: #2980b9;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --success-color: #27ae60;
+            --warning-color: #e67e22;
         }
 
         body {
-            font-family: var(--font-body);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: #333;
             line-height: 1.6;
@@ -25,153 +24,163 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            background: var(--container-bg);
+            background: var(--card-bg);
             padding: 40px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        header {
-            border-bottom: 2px solid #eee;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
 
         h1 {
-            font-family: var(--font-heading);
             color: var(--primary-color);
-            margin: 0;
-            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
         }
 
         h2 {
-            font-family: var(--font-heading);
             color: var(--primary-color);
-            font-size: 1.5rem;
-            margin-top: 30px;
-            border-bottom: 1px solid #eee;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #eee;
             padding-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        /* Grid Layout for Inputs */
+        .grid-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
         }
 
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #555;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #444;
+            font-size: 0.9rem;
         }
 
         input[type="number"] {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
             font-size: 16px;
-            box-sizing: border-box; /* Ensures padding doesn't widen element */
+            transition: border 0.3s;
         }
 
         input[type="number"]:focus {
             border-color: var(--accent-color);
             outline: none;
+            box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.1);
         }
 
         .hint {
-            font-size: 0.85rem;
-            color: #777;
-            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 4px;
         }
 
         button {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 4px;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            margin-top: 20px;
-            transition: background 0.3s;
+            margin-top: 30px;
+            transition: transform 0.2s, background 0.3s;
+            font-weight: bold;
         }
 
         button:hover {
             background-color: #1a252f;
+            transform: translateY(-2px);
         }
 
-        /* Results Section */
+        /* Results Area */
         .results-container {
-            display: none; /* Hidden by default */
+            display: none;
             margin-top: 40px;
             gap: 20px;
-            display: flex;
             flex-wrap: wrap;
         }
 
         .card {
             flex: 1;
-            min-width: 300px;
+            min-width: 320px;
             background: #fff;
-            border: 1px solid #e1e1e1;
-            border-radius: var(--border-radius);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             padding: 25px;
             position: relative;
         }
 
-        .card.recommended {
-            border: 2px solid #27ae60;
-            background-color: #f9fffb;
-        }
-
-        .badge {
-            position: absolute;
-            top: -12px;
-            right: 20px;
-            background: #27ae60;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        .card-header {
+            font-size: 1.2rem;
             font-weight: bold;
-        }
-
-        .card h3 {
-            margin-top: 0;
             color: var(--primary-color);
-            font-family: var(--font-heading);
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
             padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
         }
 
         .result-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 0.95rem;
         }
 
-        .result-row.total {
-            font-weight: bold;
-            font-size: 1.2rem;
+        .result-row.total-tax {
             border-top: 2px solid #eee;
             padding-top: 15px;
             margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.3rem;
             color: var(--primary-color);
         }
 
-        .note {
+        .recommendation-box {
+            grid-column: 1 / -1;
             background-color: #fff3cd;
             color: #856404;
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            border-left: 5px solid #ffeeba;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 6px solid #ffc107;
+            margin-bottom: 20px;
+            display: none;
         }
+
+        .badge-recommended {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--success-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .highlight-green { color: var(--success-color); font-weight: bold; }
+        .highlight-red { color: #c0392b; font-weight: bold; }
 
     </style>
 </head>
@@ -179,241 +188,370 @@
 
 <div class="container">
     <header>
-        <h1>Tax Calculator 2025-26</h1>
-        <p>Compare New vs. Old Regime for Salaried Individuals (India)</p>
+        <h1>Comprehensive Tax Calculator</h1>
+        <p class="subtitle">Financial Year 2025-26 | Assessment Year 2026-27</p>
     </header>
 
+    <div id="recommendation" class="recommendation-box"></div>
+
     <div class="form-section">
-        <div class="input-group">
-            <label for="grossSalary">Gross Annual Salary (₹)</label>
-            <input type="number" id="grossSalary" placeholder="e.g. 1500000">
-        </div>
-
-        <div class="input-group">
-            <label for="otherIncome">Income from Other Sources (₹) <span style="font-weight:normal">(Interest, etc.)</span></label>
-            <input type="number" id="otherIncome" value="0">
-        </div>
-
-        <h2>Old Regime Specifics</h2>
-        <p class="hint">Fill these only if you want to check tax under the Old Regime.</p>
         
-        <div class="input-group">
-            <label for="exemptions">Exemptions (HRA, LTA, etc.) (₹)</label>
-            <input type="number" id="exemptions" value="0">
-            <div class="hint">Allowances under Section 10 (e.g., House Rent Allowance)</div>
+        <h2>1. Salary & Property</h2>
+        <div class="grid-section">
+            <div class="input-group">
+                <label>Gross Salary</label>
+                <input type="number" id="salary" placeholder="Total Annual Salary">
+            </div>
+            <div class="input-group">
+                <label>Other Taxable Income</label>
+                <input type="number" id="other_income" placeholder="Exam fees, Guest Lectures etc.">
+            </div>
         </div>
 
-        <div class="input-group">
-            <label for="deductions">Chapter VI-A Deductions (80C, 80D, etc.) (₹)</label>
-            <input type="number" id="deductions" value="0">
-            <div class="hint">Investments (PPF, LIC), Medical Insurance, etc.</div>
+        <div class="grid-section" style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 10px;">
+            <div class="input-group">
+                <label>Rental Income (Annual Rent Received)</label>
+                <input type="number" id="rent_received" placeholder="Total rent from tenant">
+            </div>
+            <div class="input-group">
+                <label>Housing Loan Interest (Rented Property)</label>
+                <input type="number" id="rent_interest" placeholder="Interest paid on loan">
+                <div class="hint">Loss set-off allowed only in Old Regime (Max 2L).</div>
+            </div>
         </div>
 
-        <button onclick="calculateTax()">Calculate Tax</button>
+        <h2>2. Capital Gains (Shares & Mutual Funds)</h2>
+        <div class="grid-section">
+            <div class="input-group">
+                <label>Short Term Capital Gains (STCG)</label>
+                <input type="number" id="stcg" placeholder="Equity held < 12 months">
+                <div class="hint">Taxed flat @ 20%</div>
+            </div>
+            <div class="input-group">
+                <label>Long Term Capital Gains (LTCG)</label>
+                <input type="number" id="ltcg" placeholder="Equity held > 12 months">
+                <div class="hint">Taxed flat @ 12.5% (Exempt up to ₹1.25L)</div>
+            </div>
+        </div>
+
+        <h2>3. Income from Other Sources</h2>
+        <div class="grid-section">
+            <div class="input-group">
+                <label>Book Royalty Income</label>
+                <input type="number" id="royalty" placeholder="Gross Royalty">
+                <div class="hint">Ded. u/s 80QQB (Old Regime only)</div>
+            </div>
+            <div class="input-group">
+                <label>Dividend Income</label>
+                <input type="number" id="dividend" placeholder="Taxed at slab rates">
+            </div>
+            <div class="input-group">
+                <label>Savings Bank Interest</label>
+                <input type="number" id="interest_savings" placeholder="SB Interest">
+                <div class="hint">Ded. u/s 80TTA (Old Regime only)</div>
+            </div>
+            <div class="input-group">
+                <label>FD / RD Interest</label>
+                <input type="number" id="interest_fd" placeholder="Fixed/Recurring Deposit Interest">
+            </div>
+            <div class="input-group">
+                <label>Taxable Maturity Proceeds</label>
+                <input type="number" id="maturity" placeholder="e.g. LIC/Postal (if taxable)">
+                <div class="hint">Leave blank if exempt u/s 10(10D)</div>
+            </div>
+        </div>
+
+        <h2>4. Deductions (Old Regime Only)</h2>
+        <div class="grid-section">
+            <div class="input-group">
+                <label>Sec 80C Investments</label>
+                <input type="number" id="ded_80c" placeholder="LIC Premium, PPF, EPF etc.">
+                <div class="hint">Max limit ₹1,50,000</div>
+            </div>
+            <div class="input-group">
+                <label>Sec 80D Medical Insurance</label>
+                <input type="number" id="ded_80d" placeholder="Premium paid">
+                <div class="hint">Max ₹25k (Self) / ₹50k (Seniors)</div>
+            </div>
+            <div class="input-group">
+                <label>Sec 80CCD(1B) NPS (Optional)</label>
+                <input type="number" id="ded_nps" placeholder="National Pension System">
+                <div class="hint">Max ₹50,000</div>
+            </div>
+        </div>
+
+        <button onclick="calculate()">Calculate Tax Liability</button>
     </div>
 
-    <div id="results" class="results-container" style="display:none;">
+    <div id="results" class="results-container">
         <div class="card" id="card-new">
-            <h3>New Regime (Default)</h3>
-            <div class="result-row"><span>Gross Income:</span> <span id="new-gross">0</span></div>
-            <div class="result-row"><span>Std. Deduction:</span> <span id="new-std">75,000</span></div>
-            <div class="result-row"><span>Taxable Income:</span> <span id="new-taxable">0</span></div>
-            <div class="result-row"><span>Base Tax:</span> <span id="new-base-tax">0</span></div>
-            <div class="result-row"><span>Rebate (87A):</span> <span id="new-rebate">0</span></div>
+            <div class="card-header">New Regime (FY 25-26)</div>
+            <div class="result-row"><span>Gross Salary Income:</span> <span id="new-salary">0</span></div>
+            <div class="result-row"><span>Std. Deduction:</span> <span>(-) ₹75,000</span></div>
+            <div class="result-row"><span>House Prop. Income/Loss:</span> <span id="new-hp">0</span></div>
+            <div class="result-row"><small style="color:red">Note: HP Loss set-off NOT allowed</small></div>
+            <div class="result-row"><span>Other Sources:</span> <span id="new-other">0</span></div>
+            <div class="result-row" style="border-top:1px dashed #ccc; padding-top:5px"><span><strong>Net Taxable Income:</strong></span> <span id="new-taxable">0</span></div>
+            
+            <br>
+            <div class="result-row"><span>Tax on Normal Income:</span> <span id="new-tax-normal">0</span></div>
+            <div class="result-row"><span>Tax on STCG (20%):</span> <span id="new-tax-stcg">0</span></div>
+            <div class="result-row"><span>Tax on LTCG (12.5%):</span> <span id="new-tax-ltcg">0</span></div>
+            <div class="result-row"><span>Rebate (87A):</span> <span id="new-rebate" class="highlight-green">0</span></div>
             <div class="result-row"><span>Cess (4%):</span> <span id="new-cess">0</span></div>
-            <div class="result-row total"><span>Total Tax:</span> <span id="new-total">0</span></div>
+            <div class="result-row total-tax"><span>Total Tax:</span> <span id="new-total">0</span></div>
         </div>
 
         <div class="card" id="card-old">
-            <h3>Old Regime</h3>
-            <div class="result-row"><span>Gross Income:</span> <span id="old-gross">0</span></div>
-            <div class="result-row"><span>Exemptions:</span> <span id="old-exempt">0</span></div>
-            <div class="result-row"><span>Std. Deduction:</span> <span id="old-std">50,000</span></div>
-            <div class="result-row"><span>Deductions (VI-A):</span> <span id="old-deduct">0</span></div>
-            <div class="result-row"><span>Taxable Income:</span> <span id="old-taxable">0</span></div>
-            <div class="result-row"><span>Base Tax:</span> <span id="old-base-tax">0</span></div>
-            <div class="result-row"><span>Rebate (87A):</span> <span id="old-rebate">0</span></div>
+            <div class="card-header">Old Regime</div>
+            <div class="result-row"><span>Gross Salary Income:</span> <span id="old-salary">0</span></div>
+            <div class="result-row"><span>Std. Deduction:</span> <span>(-) ₹50,000</span></div>
+            <div class="result-row"><span>House Prop. Income/Loss:</span> <span id="old-hp">0</span></div>
+            <div class="result-row"><small style="color:green">Note: HP Loss set-off allowed (Max 2L)</small></div>
+            <div class="result-row"><span>Other Sources (Gross):</span> <span id="old-other-gross">0</span></div>
+            
+            <div style="background:#f9f9f9; padding:10px; border-radius:4px; margin:10px 0;">
+                <div class="result-row"><span>Ded. 80C + 80CCD:</span> <span id="old-80c">0</span></div>
+                <div class="result-row"><span>Ded. 80D (Medical):</span> <span id="old-80d">0</span></div>
+                <div class="result-row"><span>Ded. 80QQB (Royalty):</span> <span id="old-qqb">0</span></div>
+                <div class="result-row"><span>Ded. 80TTA (Interest):</span> <span id="old-tta">0</span></div>
+            </div>
+
+            <div class="result-row" style="border-top:1px dashed #ccc; padding-top:5px"><span><strong>Net Taxable Income:</strong></span> <span id="old-taxable">0</span></div>
+            <br>
+            <div class="result-row"><span>Tax on Normal Income:</span> <span id="old-tax-normal">0</span></div>
+            <div class="result-row"><span>Tax on STCG (20%):</span> <span id="old-tax-stcg">0</span></div>
+            <div class="result-row"><span>Tax on LTCG (12.5%):</span> <span id="old-tax-ltcg">0</span></div>
+            <div class="result-row"><span>Rebate (87A):</span> <span id="old-rebate" class="highlight-green">0</span></div>
             <div class="result-row"><span>Cess (4%):</span> <span id="old-cess">0</span></div>
-            <div class="result-row total"><span>Total Tax:</span> <span id="old-total">0</span></div>
+            <div class="result-row total-tax"><span>Total Tax:</span> <span id="old-total">0</span></div>
         </div>
     </div>
-    
-    <div id="message-box" class="note" style="display:none;"></div>
 </div>
 
 <script>
-    function formatCurrency(num) {
-        return "₹" + num.toLocaleString('en-IN');
+    const fmt = (num) => "₹" + Math.round(num).toLocaleString('en-IN');
+    const val = (id) => parseFloat(document.getElementById(id).value) || 0;
+
+    function calculate() {
+        // --- 1. GATHER INPUTS ---
+        const salary = val('salary');
+        const otherTaxable = val('other_income');
+        
+        // Rental
+        const rentReceived = val('rent_received');
+        const rentInterest = val('rent_interest');
+        const rentStdDed = rentReceived * 0.30;
+        
+        // Capital Gains
+        const stcg = val('stcg');
+        const ltcg = val('ltcg');
+
+        // Other Sources
+        const royalty = val('royalty');
+        const dividend = val('dividend');
+        const intSavings = val('interest_savings');
+        const intFd = val('interest_fd');
+        const maturity = val('maturity');
+
+        // Deductions
+        const ded80c = Math.min(val('ded_80c') + val('ded_nps'), 200000); // Simplification: 1.5L + 50k NPS
+        const ded80d = val('ded_80d');
+
+        // --- 2. COMMON CALCULATIONS ---
+        
+        // House Property Income (Raw)
+        // Income = Rent - 30% - Interest
+        let hpIncomeRaw = rentReceived - rentStdDed - rentInterest;
+        
+        // Other Sources Total (Before specific deductions)
+        const incomeOtherSourcesRaw = otherTaxable + royalty + dividend + intSavings + intFd + maturity;
+
+        // --- 3. NEW REGIME CALCULATION ---
+        
+        // A. Salary
+        let newSalaryNet = Math.max(0, salary - 75000); // Std Deduction 75k
+        
+        // B. House Property
+        // Rule: Loss CANNOT be set off against other heads.
+        let newHpIncome = 0;
+        if (hpIncomeRaw >= 0) {
+            newHpIncome = hpIncomeRaw;
+        } else {
+            newHpIncome = 0; // Loss is ignored (cannot reduce salary)
+        }
+
+        // C. Total Normal Income
+        let newGrossTotal = newSalaryNet + newHpIncome + incomeOtherSourcesRaw;
+        let newTaxableNormal = newGrossTotal; // No Chapter VI-A deductions
+
+        // D. Tax Calculation (New Regime Slabs)
+        let newTaxNormal = calculateNewSlab(newTaxableNormal);
+
+        // --- 4. OLD REGIME CALCULATION ---
+        
+        // A. Salary
+        let oldSalaryNet = Math.max(0, salary - 50000); // Std Deduction 50k
+
+        // B. House Property
+        // Rule: Loss can be set off against other heads up to 2L.
+        let oldHpIncome = 0;
+        let oldHpLossSetOff = 0;
+        
+        if (hpIncomeRaw >= 0) {
+            oldHpIncome = hpIncomeRaw;
+        } else {
+            // It is a loss
+            // We can set off up to 2,00,000 against other income
+            let loss = Math.abs(hpIncomeRaw);
+            oldHpLossSetOff = Math.min(loss, 200000); // Amount to subtract from total
+            oldHpIncome = -oldHpLossSetOff; // Represent as negative number for summing
+        }
+
+        // C. Specific Deductions (80QQB, 80TTA)
+        let dedQQB = Math.min(royalty, 300000); // Max 3L
+        let dedTTA = Math.min(intSavings, 10000); // Max 10k
+        
+        // D. Gross Total (Before Ch VI-A)
+        let oldGrossTotal = oldSalaryNet + oldHpIncome + incomeOtherSourcesRaw;
+
+        // E. Net Taxable (After Deductions)
+        // Total Deductions = 80C + 80D + 80QQB + 80TTA
+        let totalDeductions = ded80c + ded80d + dedQQB + dedTTA;
+        
+        // Restrict deductions to Gross Total (cannot make income negative)
+        let oldTaxableNormal = Math.max(0, oldGrossTotal - totalDeductions);
+
+        // F. Tax Calculation (Old Regime Slabs)
+        let oldTaxNormal = calculateOldSlab(oldTaxableNormal);
+
+        // --- 5. CAPITAL GAINS TAX (Common Logic applied to separate totals) ---
+        // STCG Tax: 20%
+        let taxSTCG = stcg * 0.20;
+        
+        // LTCG Tax: 12.5% on amount > 1.25L
+        let ltcgTaxable = Math.max(0, ltcg - 125000);
+        let taxLTCG = ltcgTaxable * 0.125;
+
+        // --- 6. FINAL TOTALS & REBATES ---
+
+        // NEW REGIME TOTAL
+        let newTotalIncomeForRebate = newTaxableNormal + stcg + ltcg; 
+        let newTotalTaxLiab = newTaxNormal + taxSTCG + taxLTCG;
+        
+        // Rebate 87A (New): If Total Income <= 12L, Tax is 0.
+        // Note: Rebate usually doesn't apply to LTCG 112A, but applies to normal/STCG.
+        // Simplified: If Income <= 12L, Rebate = Tax Payable (excluding LTCG 112A sometimes, but typically rebate covers up to limit).
+        // Strict Rule: Rebate 87A New Regime is up to 60k if TI <= 12L.
+        let newRebate = 0;
+        if (newTotalIncomeForRebate <= 1200000) {
+             newRebate = newTotalTaxLiab; // Simplify: Full rebate
+        }
+        let newFinalTax = Math.max(0, newTotalTaxLiab - newRebate);
+        let newCess = newFinalTax * 0.04;
+        let newGrandTotal = newFinalTax + newCess;
+
+        // OLD REGIME TOTAL
+        let oldTotalIncomeForRebate = oldTaxableNormal + stcg + ltcg;
+        let oldTotalTaxLiab = oldTaxNormal + taxSTCG + taxLTCG;
+
+        // Rebate 87A (Old): If Total Income <= 5L, Rebate up to 12.5k.
+        let oldRebate = 0;
+        if (oldTotalIncomeForRebate <= 500000) {
+            oldRebate = Math.min(oldTotalTaxLiab, 12500);
+        }
+        let oldFinalTax = Math.max(0, oldTotalTaxLiab - oldRebate);
+        let oldCess = oldFinalTax * 0.04;
+        let oldGrandTotal = oldFinalTax + oldCess;
+
+        // --- 7. DISPLAY ---
+        document.getElementById('results').style.display = 'flex';
+        document.getElementById('recommendation').style.display = 'block';
+
+        // Fill New
+        document.getElementById('new-salary').innerText = fmt(salary);
+        document.getElementById('new-hp').innerText = fmt(newHpIncome);
+        document.getElementById('new-other').innerText = fmt(incomeOtherSourcesRaw);
+        document.getElementById('new-taxable').innerText = fmt(newTaxableNormal);
+        document.getElementById('new-tax-normal').innerText = fmt(newTaxNormal);
+        document.getElementById('new-tax-stcg').innerText = fmt(taxSTCG);
+        document.getElementById('new-tax-ltcg').innerText = fmt(taxLTCG);
+        document.getElementById('new-rebate').innerText = fmt(newRebate);
+        document.getElementById('new-cess').innerText = fmt(newCess);
+        document.getElementById('new-total').innerText = fmt(newGrandTotal);
+
+        // Fill Old
+        document.getElementById('old-salary').innerText = fmt(salary);
+        document.getElementById('old-hp').innerText = fmt(oldHpIncome) + (oldHpIncome < 0 ? " (Loss Set-off)" : "");
+        document.getElementById('old-other-gross').innerText = fmt(incomeOtherSourcesRaw);
+        document.getElementById('old-80c').innerText = fmt(ded80c);
+        document.getElementById('old-80d').innerText = fmt(ded80d);
+        document.getElementById('old-qqb').innerText = fmt(dedQQB);
+        document.getElementById('old-tta').innerText = fmt(dedTTA);
+        document.getElementById('old-taxable').innerText = fmt(oldTaxableNormal);
+        document.getElementById('old-tax-normal').innerText = fmt(oldTaxNormal);
+        document.getElementById('old-tax-stcg').innerText = fmt(taxSTCG);
+        document.getElementById('old-tax-ltcg').innerText = fmt(taxLTCG);
+        document.getElementById('old-rebate').innerText = fmt(oldRebate);
+        document.getElementById('old-cess').innerText = fmt(oldCess);
+        document.getElementById('old-total').innerText = fmt(oldGrandTotal);
+
+        // Recommendation
+        const recBox = document.getElementById('recommendation');
+        const badge = '<div class="badge-recommended">Recommended</div>';
+        
+        // Reset
+        document.getElementById('card-new').classList.remove('recommended');
+        document.getElementById('card-old').classList.remove('recommended');
+        document.querySelectorAll('.badge-recommended').forEach(e => e.remove());
+
+        if (newGrandTotal < oldGrandTotal) {
+            let save = oldGrandTotal - newGrandTotal;
+            recBox.innerHTML = `<strong>Option: New Regime is better.</strong> You save <strong>${fmt(save)}</strong>.`;
+            recBox.style.borderLeftColor = "#27ae60";
+            document.getElementById('card-new').classList.add('recommended');
+            document.getElementById('card-new').insertAdjacentHTML('beforeend', badge);
+        } else if (oldGrandTotal < newGrandTotal) {
+            let save = newGrandTotal - oldGrandTotal;
+            recBox.innerHTML = `<strong>Option: Old Regime is better.</strong> You save <strong>${fmt(save)}</strong>.<br><small>Primarily due to House Property Loss Set-off and Deductions.</small>`;
+            recBox.style.borderLeftColor = "#27ae60";
+            document.getElementById('card-old').classList.add('recommended');
+            document.getElementById('card-old').insertAdjacentHTML('beforeend', badge);
+        } else {
+            recBox.innerHTML = `<strong>Both regimes result in the same tax.</strong>`;
+        }
     }
 
-    function calculateTax() {
-        // 1. Get Inputs
-        const grossSalary = parseFloat(document.getElementById('grossSalary').value) || 0;
-        const otherIncome = parseFloat(document.getElementById('otherIncome').value) || 0;
-        const oldExemptions = parseFloat(document.getElementById('exemptions').value) || 0;
-        const oldDeductions = parseFloat(document.getElementById('deductions').value) || 0;
-
-        const totalIncome = grossSalary + otherIncome;
-
-        // --- CALCULATION: NEW REGIME (FY 2025-26) ---
-        // Rules: Std Deduction 75k. No 80C/HRA.
-        // Rebate: Tax is 0 if Taxable Income <= 12,00,000.
-        
-        const newStdDeduction = 75000;
-        let newTaxableIncome = Math.max(0, totalIncome - newStdDeduction);
-        
-        let newTax = 0;
-        
-        // New Slabs FY 25-26
-        // 0-4L: Nil
-        // 4-8L: 5%
-        // 8-12L: 10%
-        // 12-16L: 15%
-        // 16-20L: 20%
-        // 20-24L: 25%
-        // >24L: 30%
-
-        if (newTaxableIncome > 2400000) {
-            newTax += (newTaxableIncome - 2400000) * 0.30;
-            newTax += 400000 * 0.25; // 20-24L
-            newTax += 400000 * 0.20; // 16-20L
-            newTax += 400000 * 0.15; // 12-16L
-            newTax += 400000 * 0.10; // 8-12L
-            newTax += 400000 * 0.05; // 4-8L
-        } else if (newTaxableIncome > 2000000) {
-            newTax += (newTaxableIncome - 2000000) * 0.25;
-            newTax += 400000 * 0.20;
-            newTax += 400000 * 0.15;
-            newTax += 400000 * 0.10;
-            newTax += 400000 * 0.05;
-        } else if (newTaxableIncome > 1600000) {
-            newTax += (newTaxableIncome - 1600000) * 0.20;
-            newTax += 400000 * 0.15;
-            newTax += 400000 * 0.10;
-            newTax += 400000 * 0.05;
-        } else if (newTaxableIncome > 1200000) {
-            newTax += (newTaxableIncome - 1200000) * 0.15;
-            newTax += 400000 * 0.10;
-            newTax += 400000 * 0.05;
-        } else if (newTaxableIncome > 800000) {
-            newTax += (newTaxableIncome - 800000) * 0.10;
-            newTax += 400000 * 0.05;
-        } else if (newTaxableIncome > 400000) {
-            newTax += (newTaxableIncome - 400000) * 0.05;
+    function calculateNewSlab(income) {
+        // FY 25-26 New Regime Slabs
+        let tax = 0;
+        if (income > 2400000) {
+            tax += (income - 2400000) * 0.30 + 400000*0.25 + 400000*0.20 + 400000*0.15 + 400000*0.10 + 400000*0.05;
+        } else if (income > 2000000) {
+            tax += (income - 2000000) * 0.25 + 400000*0.20 + 400000*0.15 + 400000*0.10 + 400000*0.05;
+        } else if (income > 1600000) {
+            tax += (income - 1600000) * 0.20 + 400000*0.15 + 400000*0.10 + 400000*0.05;
+        } else if (income > 1200000) {
+            tax += (income - 1200000) * 0.15 + 400000*0.10 + 400000*0.05;
+        } else if (income > 800000) {
+            tax += (income - 800000) * 0.10 + 400000*0.05;
+        } else if (income > 400000) {
+            tax += (income - 400000) * 0.05;
         }
+        return tax;
+    }
 
-        // Rebate 87A (New Regime): If Taxable Income <= 12L, Tax is 0.
-        // Max rebate is essentially 60k (Tax on 12L).
-        let newRebate = 0;
-        if (newTaxableIncome <= 1200000) {
-            newRebate = newTax;
-            newTax = 0;
-        } else {
-            // Marginal Relief for New Regime (Income slightly > 12L)
-            // Tax payable shall not exceed the income exceeding 12L.
-            // i.e., Tax <= (Income - 12L)
-            let excessIncome = newTaxableIncome - 1200000;
-            if (newTax > excessIncome) {
-                // If calculated tax is higher than the extra money earned above 12L,
-                // cap the tax at the extra money amount.
-                // However, this is a simplified view. The strict calculation is:
-                // (Tax on Income) - (Tax on 12L) <= (Income - 12L).
-                // Tax on 12L is 60,000.
-                // But wait, Tax on 12L is 0 due to rebate.
-                // The government provision says: Tax payable shall not exceed amount by which income exceeds 12L.
-                // So if Income is 12,10,000. Tax calculated is ~61.5k.
-                // Excess income is 10k.
-                // You pay 10k tax.
-                newTax = excessIncome; 
-                // Note: This only applies in the small window where this holds true.
-            }
+    function calculateOldSlab(income) {
+        // Old Regime Slabs
+        let tax = 0;
+        if (income > 1000000) {
+            tax += (income - 1000000) * 0.30 + 500000*0.20 + 250000*0.05;
+        } else if (income > 500000) {
+            tax += (income - 500000) * 0.20 + 250000*0.05;
+        } else if (income > 250000) {
+            tax += (income - 250000) * 0.05;
         }
-
-        let newCess = newTax * 0.04;
-        let newTotalTax = newTax + newCess;
-
-        // --- CALCULATION: OLD REGIME ---
-        // Rules: Std Deduction 50k. Exemptions & Deductions allowed.
-        const oldStdDeduction = 50000;
-        let oldTaxableIncome = Math.max(0, totalIncome - oldExemptions - oldStdDeduction - oldDeductions);
-        
-        let oldTax = 0;
-        // Old Slabs
-        // 0-2.5L: Nil
-        // 2.5-5L: 5%
-        // 5-10L: 20%
-        // >10L: 30%
-
-        if (oldTaxableIncome > 1000000) {
-            oldTax += (oldTaxableIncome - 1000000) * 0.30;
-            oldTax += 500000 * 0.20; // 5-10L
-            oldTax += 250000 * 0.05; // 2.5-5L
-        } else if (oldTaxableIncome > 500000) {
-            oldTax += (oldTaxableIncome - 500000) * 0.20;
-            oldTax += 250000 * 0.05;
-        } else if (oldTaxableIncome > 250000) {
-            oldTax += (oldTaxableIncome - 250000) * 0.05;
-        }
-
-        // Rebate 87A (Old Regime): If Taxable Income <= 5L, Rebate up to 12500.
-        let oldRebate = 0;
-        if (oldTaxableIncome <= 500000) {
-            oldRebate = Math.min(oldTax, 12500);
-            oldTax = oldTax - oldRebate;
-        }
-
-        let oldCess = oldTax * 0.04;
-        let oldTotalTax = oldTax + oldCess;
-
-        // --- DISPLAY RESULTS ---
-        document.getElementById('results').style.display = 'flex';
-        document.getElementById('message-box').style.display = 'block';
-
-        // Fill New Regime Data
-        document.getElementById('new-gross').innerText = formatCurrency(totalIncome);
-        document.getElementById('new-std').innerText = formatCurrency(newStdDeduction);
-        document.getElementById('new-taxable').innerText = formatCurrency(newTaxableIncome);
-        document.getElementById('new-base-tax').innerText = formatCurrency(newTax + newRebate); // Show tax before rebate
-        document.getElementById('new-rebate').innerText = formatCurrency(newRebate);
-        document.getElementById('new-cess').innerText = formatCurrency(newCess);
-        document.getElementById('new-total').innerText = formatCurrency(newTotalTax);
-
-        // Fill Old Regime Data
-        document.getElementById('old-gross').innerText = formatCurrency(totalIncome);
-        document.getElementById('old-std').innerText = formatCurrency(oldStdDeduction);
-        document.getElementById('old-exempt').innerText = formatCurrency(oldExemptions);
-        document.getElementById('old-deduct').innerText = formatCurrency(oldDeductions);
-        document.getElementById('old-taxable').innerText = formatCurrency(oldTaxableIncome);
-        document.getElementById('old-base-tax').innerText = formatCurrency(oldTax + oldRebate);
-        document.getElementById('old-rebate').innerText = formatCurrency(oldRebate);
-        document.getElementById('old-cess').innerText = formatCurrency(oldCess);
-        document.getElementById('old-total').innerText = formatCurrency(oldTotalTax);
-
-        // Comparison Logic
-        const cardNew = document.getElementById('card-new');
-        const cardOld = document.getElementById('card-old');
-        const msgBox = document.getElementById('message-box');
-
-        // Reset styles
-        cardNew.classList.remove('recommended');
-        cardOld.classList.remove('recommended');
-        const existingBadges = document.querySelectorAll('.badge');
-        existingBadges.forEach(b => b.remove());
-
-        let savings = 0;
-        if (newTotalTax < oldTotalTax) {
-            cardNew.classList.add('recommended');
-            cardNew.innerHTML += '<div class="badge">Recommended</div>';
-            savings = oldTotalTax - newTotalTax;
-            msgBox.innerHTML = `<strong>Recommendation:</strong> The <strong>New Regime</strong> is better for you. You save <strong>${formatCurrency(savings)}</strong> compared to the Old Regime.`;
-        } else if (oldTotalTax < newTotalTax) {
-            cardOld.classList.add('recommended');
-            cardOld.innerHTML += '<div class="badge">Recommended</div>';
-            savings = newTotalTax - oldTotalTax;
-            msgBox.innerHTML = `<strong>Recommendation:</strong> The <strong>Old Regime</strong> is better for you. You save <strong>${formatCurrency(savings)}</strong> compared to the New Regime.`;
-        } else {
-            msgBox.innerHTML = `<strong>Both regimes result in the same tax liability.</strong>`;
-        }
+        return tax;
     }
 </script>
 
